@@ -1,0 +1,241 @@
+{
+  "células" : [
+    {
+      "cell_type" : " marcação " ,
+      "metadados" : {
+        "id" : " visualizar-no-github " ,
+        "colab_type" : " texto "
+      },
+      "fonte" : [
+        " <a href= \" https://colab.research.google.com/github/mmtaha/Projeto_busca_de_emprego/blob/main/teste_busca_emprego_py.ipynb \" target= \" _parent \" > <img src= \" https://colab.research.google.com/assets/colab-badge.svg \" alt= \" Abrir no Colab \" /></a> "
+      ]
+    },
+    {
+      "cell_type" : " código " ,
+      "execution_count" : nulo ,
+      "metadados" : {
+        "colab" : {
+          "base_uri" : " https://localhost:8080/ "
+        },
+        "id" : " WWBWepAXw0Jd " ,
+        "outputId" : " 4602a682-8191-4f46-9370-8b6794899f45 "
+      },
+      "saídas" : [
+        {
+          "output_type" : " fluxo " ,
+          "nome" : " stderr " ,
+          "texto" : [
+            " [nltk_data] Baixando o pacote punkt para /root/nltk_data... \n " ,
+            " [nltk_data] O pacote punkt já está atualizado! \n " ,
+            " [nltk_data] Baixando stopwords do pacote para /root/nltk_data... \n " ,
+            " [nltk_data] O pacote stopwords já está atualizado! \n "
+          ]
+        }
+      ],
+      "fonte" : [
+        " # Etapa 1: Processamento do Currículo e Extração de Palavras-chave \n " ,
+        " \n " ,
+        " importar os \n " ,
+        " importar docx \n " ,
+        " importar espaço \n " ,
+        " importar pytextrank \n " ,
+        " importar yake \n " ,
+        " de rake_nltk importar Rake \n " ,
+        " de nltk.corpus importar stopwords \n " ,
+        " de nltk importar baixar \n " ,
+        " importar re \n " ,
+        " \n " ,
+        " # Baixar recursos necessários \n " ,
+        " importar nltk \n " ,
+        " nltk.download( \" ponto \" ) \n " ,
+        " nltk.download( \" palavras irrelevantes \" ) \n " ,
+        " \n " ,
+        " # Diretórios fixos \n " ,
+        " DIR_CURR = \" /conteúdo/currículo \"\n " ,
+        " DIR_SAMPLE = \" /conteúdo/dados_de_amostra \"\n " ,
+        " DIR_PROC = \" /content/Processamento \"\n " ,
+        " DIR_OUT = \" /conteúdo/Saída \"\n " ,
+        " \n " ,
+        " para caminho em [DIR_CURR, DIR_SAMPLE, DIR_PROC, DIR_OUT]: \n " ,
+        "     os.makedirs(caminho, exist_ok=True) \n " ,
+        " \n " ,
+        " # Credenciais \n " ,
+        " CRED = { \n " ,
+        "     #################'linkedin': {'email': '*************', 'senha': '***************'}, \n " , ################# NAO ESQUECER DE ATUALIZAR O LOGIN E SENHA\n",
+        "     #################'glassdoor': {'email': '************', 'senha': '****************'}, \n " , ################ NAO ESQUECER DE ATUALIZAR O LOGIN E SENHA\n",
+        "     #################'vagas': {'usuario': '****************', 'senha': '****************'}, \n " , ################ NAO ESQUECER DE ATUALIZAR O LOGIN E SENHA\n",
+        "     #################'indeed': {'email': '***************', 'senha': '****************'} \n " , ################# NAO ESQUECER DE ATUALIZAR O LOGIN E SENHA\n",
+        " } \n " ,
+        " \n " ,
+        " # Modelos spaCy e extratores \n " ,
+        " nlpt = spacy.load( \" pt_core_news_sm \" ) \n " ,
+        " nlpt.add_pipe( \" textrank \" ) \n " ,
+        " \n " ,
+        " # Extratores \n " ,
+        " yake_extractor = yake.KeywordExtractor(lan= \" pt \" , top=100, n=1) \n " ,
+        " vetorizador = TfidfVectorizer() \n " ,
+        " X = vetorizador.fit_transform(todos_os_documentos) \n " ,
+        " \n " ,
+        " # Separar vetores \n " ,
+        " vetores_curriculos = X[:len(curriculos_proc)] \n " ,
+        " vetores_vagas = X[len(curriculos_proc):] \n " ,
+        " \n " ,
+        " # Calcular similaridade \n " ,
+        " resultado_analise = [] \n " ,
+        " para i, (nome_currículo, _) em enumerate(curriculos_proc): \n " ,
+        "     para j, (nome_vaga, texto_vaga) em enumerate(vagas_proc): \n " ,
+        "         sim = cosseno_similaridade(vetores_curriculos[i], vetores_vagas[j])[0][0] \n " ,
+        "         resultado_analise.append({ \n " ,
+        "             \" currículo \" : nome_currículo, \n " ,
+        "             \" vaga \" : nome_vaga, \n " ,
+        "             \" similaridade \" : round(sim * 100, 2) \n " ,
+        "         }) \n " ,
+        " \n " ,
+        " # Exportar resultados \n " ,
+        " output_doc = Documento() \n " ,
+        " output_doc.add_heading( \" Análise de Aderência entre Currículos e Vagas \" , level=1) \n " ,
+        " \n " ,
+        " for resultado in sorted(resultado_analise, key=lambda x: x['similaridade'], reverse=True): \n " ,
+        "     output_doc.add_paragraph( \n " ,
+        "         f \" Currículo: {resultado['curriculo']} \\ n \"\n " ,
+        "         f \" Vaga: {resultado['vaga']} \\ n \"\n " ,
+        "         f \" Aderência: {resultado['similaridade']}% \"\n " ,
+        "     ) \n " ,
+        "     output_doc.add_paragraph( \"\\ n \" ) \n " ,
+        " \n " ,
+        " # Salvar resultado \n " ,
+        " saida_final = os.path.join(DIR_PROC, \" resultado_aderencia.docx \" ) \n " ,
+        " output_doc.save(saida_final) \n " ,
+        " print(f \" Análise salva em: {saida_final} \" ) \n " ,
+        " \n "
+      ],
+      "metadados" : {
+        "colab" : {
+          "base_uri" : " https://localhost:8080/ " ,
+          "altura" : 356
+        },
+        "id" : " g3l_CcilgnFt " ,
+        "outputId" : " 61c0ef5f-fda2-4545-d08d-5afba7fbb8fd "
+      },
+      "execution_count" : nulo ,
+      "saídas" : [
+        {
+          "output_type" : " erro " ,
+          "ename" : " ValueError " ,
+          "evalue" : " vocabulário vazio; talvez os documentos contenham apenas palavras irrelevantes " ,
+          "rastreamento" : [
+            " \u001b [0;31m--------------------------------------------------------------------------- \u001b [0m " ,
+            " \u001b [0;31mValueError \u001b [0m Traceback (última chamada mais recente) " ,
+            "\u001b[0;32m<ipython-input-45-7229138c2c7c>\u001b[0m em \u001b[0;36m<linha de células: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m 41\u001b[0m \u001b[0mall_docs\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0mtexto\u001b[0m \u001b[0;32mpara\u001b[0m \u001b[0m_\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtexto\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mcurriculos_proc\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0mvagas_proc\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\n\u001b[1;32m 42\u001b[0m \u001b[0mvetorizador\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mTfidfVetorizador\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 43\u001b[0;31m \u001b[0mX\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mvetorizador\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfit_transform\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mall_docs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m 44\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m 45\u001b[0m \u001b[0;31m# Separar vetores[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.11/dist-packages/sklearn/feature_extraction/text.py\u001b[0m em \u001b[0;36mfit_transform\u001b[0;34m(self, raw_documents, y)\u001b[0m\n\u001b[1;32m 2102\u001b[0m \u001b[0msublinear_tf\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msublinear_tf\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m 2103\u001b[0m )\n\u001b[0;32m-> 2104\u001b[0;31m \u001b[0mX\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0msuper\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfit_transform\u001b[0m\u001b[0;34m(\ u001b[0m\u001b[0mraw_documents\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m 2105\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_tfidf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mX\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\n\u001b[1;32m 2106\u001b[0m \u001b[0;31m# X já é uma visão transformada de raw_documents então\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            " \u001b [0;32m/usr/local/lib/python3.11/dist-packages/sklearn/base.py \u001b [0m em \u001b [0;36mwrapper \u001b [0;34m(estimador, *args, **kwargs) \u001b [0m \n \u001b [1;32m 1387 \u001b [0m ) \n \u001b [1;32m 1388 \u001b [0m ): \n \u001b [0;32m-> 1389 \u001b [0;31m                  \u001b [0;32mreturn \u001b [0m \u001b [0mfit_method \u001b [0m \u001b [0;34m( \u001b [0m \u001b [0mestimador \u001b [0m \u001b [0;34m, \u001b [0m \u001b [0;34m* \u001b [0m \u001b [0margs \u001b [0m \u001b [0;34m, \u001b [0m \u001b [0;34m** \u001b [0m \u001b [0mkwargs \u001b [0m \u001b [0;34m) \u001b [0m \u001b [0;34m \u001b [0m \u001b [0;34m \u001b [0m \u001b [0m \n \u001b [0m \u001b [1;32m 1390 \u001b [0m \u001b [0;34m \u001b [0m \u001b [0m \n \u001b [1;32m 1391 \u001b [0m          \u001b [0;32mreturn \u001b [0m \u001b [0mwrapper \u001b [0m \u001b [0;34m \u001b [0m \u001b [0;34m \u001b [0m \u001b [0m \n " ,
+            "\u001b[0;32m/usr/local/lib/python3.11/dist-packages/sklearn/feature_extraction/text.py\u001b[0m em \u001b[0;36mfit_transform\u001b[0;34m(self, raw_documents, y)\u001b[0m\n\u001b[1;32m 1374\u001b[0m \u001b[0;32mbreak\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m 1375\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1376\u001b[0;31m \u001b[0mvocabulário\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mX\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_count_vocab\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mraw_documents\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfixed_vocabulary_\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m 1377\u001b[0m \u001b[0;34m\u001b[0m\n\u001b[1;32m 1378\u001b[0m \u001b[0;32mif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mbinary\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            " \u001b [0;32m/usr/local/lib/python3.11/dist-packages/sklearn/feature_extraction/text.py \u001b [0m em \u001b [0;36m_count_vocab \u001b [0;34m(self, raw_documents, fixed_vocab) \u001b [0m \n \u001b [1;32m 1280 \u001b [0m              \u001b [0mvocabulário \u001b [0m \u001b [0;34m= \u001b [0m \u001b [0mdict \u001b [0m \u001b [0;34m( \u001b [0m \u001b [0mvocabulário \u001b [0m \u001b [0;34m) \u001b [0m \u001b [0;34m \u001b [0m \u001b [0;34m \u001b [0m \u001b [0m \n \u001b [1;32m 1281 \u001b [0m              \u001b [0;32mse \u001b [0m \u001b [0;32mnão \u001b [0m \u001b [0mvocabulário \u001b [0m \u001b [0;34m: \u001b [0m \u001b [0;34m \ u001b [ 0m \u001b [0;34m \ u001b [0m \n \u001b [0;32m-> 1282 \u001b [0;31m raise ValueError( \n \u001b [0m \u001b [1;32m 1283 \u001b [0m                      \u001b [0;34m \" vocabulário vazio; talvez os documentos contenham apenas palavras irrelevantes \" \u001b [0m \u001b [0;34m \u001b [0m \u001b [0;34m \u001b [0m \u001b [0m \n \u001b [1;32m 1284 \u001b [0m ) \n " ,
+            " \u001b [0;31mValueError \u001b [0m: vocabulário vazio; talvez os documentos contenham apenas palavras irrelevantes "
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type" : " código " ,
+      "fonte" : [
+        " importar os \n " ,
+        " importar espaço \n " ,
+        " de sklearn.feature_extraction.text importar TfidfVectorizer \n " ,
+        " de sklearn.metrics.pairwise importar cosseno_similaridade \n " ,
+        " de docx importar documento \n " ,
+        " \n " ,
+        " # Diretórios \n " ,
+        " DIR_PROC = \" /content/Processamento \"\n " ,
+        " DIR_OUT = \" /conteúdo/Saída \"\n " ,
+        " \n " ,
+        " #POS a serem filtrados \n " ,
+        " FILTER_POS = {'PRON', 'DET', 'ADP', 'AUX', 'CCONJ', 'SCONJ', 'PART', 'INTJ', 'PUNCT', 'SPACE', 'NUM'} \n " ,
+        " \n " ,
+        " # Carregando modelo spaCy \n " ,
+        " nlp = spacy.load( \" pt_core_news_sm \" ) \n " ,
+        " \n " ,
+        " def limpar_texto(texto): \n " ,
+        "     doc = nlp(texto.lower()) \n " ,
+        "     return \"  \" .join([token.lemma_ para token no doc se token.pos_ não estiver em FILTER_POS e não em token.is_stop e não em token.is_punct]) \n " ,
+        " \n " ,
+        " # Função para ler arquivos DOCX do diretório \n " ,
+        " def ler_arquivos_docx(diretório): \n " ,
+        "     textos = [] \n " ,
+        "     for nome_arquivo in os.listdir(diretorio): \n " ,
+        "         if nome_arquivo.endswith( \" .docx \" ): \n " ,
+        "             path = os.path.join(diretório, nome_arquivo) \n " ,
+        "             doc = Documento(caminho) \n " ,
+        "             texto_completo = \"  \" .join([p.text para p em doc.paragraphs]) \n " ,
+        "             textos.append((nome_arquivo, texto_completo)) \n " ,
+        "     retornar textos \n " ,
+        " \n " ,
+        " # Carregar currículos e vagas processadas \n " ,
+        " currículos = ler_arquivos_docx(DIR_PROC) \n " ,
+        " vagas = ler_arquivos_docx(DIR_OUT) \n " ,
+        " \n " ,
+        " # Pré-processar os textos \n " ,
+        " curriculos_proc = [(nome, limpar_texto(texto)) for nome, texto em curriculos] \n " ,
+        " vagas_proc = [(nome, limpar_texto(texto)) for nome, texto em vagas] \n " ,
+        " \n " ,
+        " # Vetorizar \n " ,
+        " all_docs = [texto para _, texto em curriculos_proc + vagas_proc] \n " ,
+        " vetorizador = TfidfVectorizer() \n " ,
+        " X = vetorizador.fit_transform(todos_os_documentos) \n " ,
+        " \n " ,
+        " # Separar vetores \n " ,
+        " vetores_curriculos = X[:len(curriculos_proc)] \n " ,
+        " vetores_vagas = X[len(curriculos_proc):] \n " ,
+        " \n " ,
+        " # Calcular similaridade \n " ,
+        " resultado_analise = [] \n " ,
+        " para i, (nome_currículo, _) em enumerate(curriculos_proc): \n " ,
+        "     para j, (nome_vaga, texto_vaga) em enumerate(vagas_proc): \n " ,
+        "         sim = cosseno_similaridade(vetores_curriculos[i], vetores_vagas[j])[0][0] \n " ,
+        "         resultado_analise.append({ \n " ,
+        "             \" currículo \" : nome_currículo, \n " ,
+        "             \" vaga \" : nome_vaga, \n " ,
+        "             \" similaridade \" : round(sim * 100, 2) \n " ,
+        "         }) \n " ,
+        " \n " ,
+        " # Exportar resultados \n " ,
+        " output_doc = Documento() \n " ,
+        " output_doc.add_heading( \" Análise de Aderência entre Currículos e Vagas \" , level=1) \n " ,
+        " \n " ,
+        " for resultado in sorted(resultado_analise, key=lambda x: x['similaridade'], reverse=True): \n " ,
+        "     output_doc.add_paragraph( \n " ,
+        "         f \" Currículo: {resultado['curriculo']} \\ n \"\n " ,
+        "         f \" Vaga: {resultado['vaga']} \\ n \"\n " ,
+        "         f \" Aderência: {resultado['similaridade']}% \"\n " ,
+        "     ) \n " ,
+        "     output_doc.add_paragraph( \"\\ n \" ) \n " ,
+        " \n " ,
+        " # Salvar resultado \n " ,
+        " saida_final = os.path.join(DIR_PROC, \" resultado_aderencia.docx \" ) \n " ,
+        " output_doc.save(saida_final) \n " ,
+        " print(f \" Análise salva em: {saida_final} \" ) \n "
+      ],
+      "metadados" : {
+        "id" : " Z1UGqqBoI1LV "
+      },
+      "execution_count" : nulo ,
+      "saídas" : []
+    }
+  ],
+  "metadados" : {
+    "colab" : {
+      "procedência" : [],
+      "authorship_tag" : " ABX9TyMRylzKvXMS0wz1Ex5N39BN " ,
+      "include_colab_link" : verdadeiro
+    },
+    "especificação do kernel" : {
+      "nome_de_exibição" : " Python 3 " ,
+      "nome" : " python3 "
+    },
+    "informações_de_idioma" : {
+      "nome" : " python "
+    }
+  },
+  "nbformat" : 4 ,
+  "nbformat_minor" : 0
+}
